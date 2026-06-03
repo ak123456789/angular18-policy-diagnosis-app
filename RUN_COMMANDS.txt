@@ -1,0 +1,17 @@
+Run these commands:
+
+cd angular18-policy-diagnosis-app
+npm install
+npm start
+
+Open:
+http://localhost:4200
+
+Push to GitHub:
+
+git init
+git add .
+git commit -m "Initial Angular 18 policy diagnosis app"
+git branch -M main
+git remote add origin https://github.com/YOUR-USERNAME/angular18-policy-diagnosis-app.git
+git push -u origin main

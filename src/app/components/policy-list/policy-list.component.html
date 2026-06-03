@@ -1,0 +1,99 @@
+<section class="diagnosis-card">
+  <div class="card-header">
+    <div>
+      <p class="section-label">Policy Data Diagnosis</p>
+      <h2>Policy Details Page</h2>
+    </div>
+
+    <div class="mode-pill">
+      {{ apiMode }}
+    </div>
+  </div>
+
+  <div class="flow-box">
+    <div class="flow-step">Angular Page</div>
+    <div class="arrow">→</div>
+    <div class="flow-step">Component</div>
+    <div class="arrow">→</div>
+    <div class="flow-step">Policy Service</div>
+    <div class="arrow">→</div>
+    <div class="flow-step">API / Mock Data</div>
+    <div class="arrow">→</div>
+    <div class="flow-step">HTML Table</div>
+  </div>
+
+  <div class="diagnostic-grid">
+    <div class="metric"><span>Total Policies</span><strong>{{ policies.length }}</strong></div>
+    <div class="metric"><span>Active</span><strong>{{ activeCount }}</strong></div>
+    <div class="metric"><span>Pending</span><strong>{{ pendingCount }}</strong></div>
+    <div class="metric"><span>Expired</span><strong>{{ expiredCount }}</strong></div>
+  </div>
+
+  <div class="api-box">
+    <strong>API URL:</strong>
+    <code>{{ apiUrl }}</code>
+  </div>
+
+  <div class="actions">
+    <button type="button" class="primary-btn" (click)="loadPolicies()">Load Policy Data</button>
+    <button type="button" class="secondary-btn" (click)="clearPolicies()">Clear Table</button>
+  </div>
+
+  @if (loading) {
+    <div class="info-message">Loading policy data...</div>
+  }
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  }
+
+  @if (!loading && policies.length > 0) {
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Policy Number</th>
+            <th>Holder Name</th>
+            <th>Policy Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+            <th>Premium</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (policy of policies; track policy.policyId) {
+            <tr>
+              <td>{{ policy.policyNumber }}</td>
+              <td>{{ policy.policyHolderName }}</td>
+              <td>{{ policy.policyType }}</td>
+              <td>{{ policy.startDate | date: 'mediumDate' }}</td>
+              <td>{{ policy.endDate | date: 'mediumDate' }}</td>
+              <td><span class="status-badge" [class]="policy.status.toLowerCase()">{{ policy.status }}</span></td>
+              <td>{{ policy.premiumAmount | currency }}</td>
+              <td><button type="button" class="link-btn" (click)="viewPolicy(policy)">View</button></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (!loading && policies.length === 0 && !errorMessage) {
+    <div class="empty-message">No policy data found. Click <strong>Load Policy Data</strong>.</div>
+  }
+
+  @if (selectedPolicy) {
+    <aside class="detail-panel">
+      <h3>Selected Policy Diagnosis</h3>
+      <div class="detail-grid">
+        <div><span>Policy ID</span><strong>{{ selectedPolicy.policyId }}</strong></div>
+        <div><span>Policy Number</span><strong>{{ selectedPolicy.policyNumber }}</strong></div>
+        <div><span>Holder</span><strong>{{ selectedPolicy.policyHolderName }}</strong></div>
+        <div><span>Status</span><strong>{{ selectedPolicy.status }}</strong></div>
+      </div>
+      <p>This selected record is also printed in the browser console using <code>console.log()</code>.</p>
+    </aside>
+  }
+</section>
